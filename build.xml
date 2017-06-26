@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+
+<project name="UserMgmt" default="main" basedir=".">
+
+	<property name="package.name" value="UserMgmt.war" />
+ 	<property name="dest.dir" value="../dist" />
+	<property name="package.file" value="${package.name}" />
+	<property name="server.path" value="E:/software/apache-tomcat-8.0.24/webapps" />
+	<property name="webcontent.dir" value="WebContent" />
+	<property name="webxml.file" value="${webcontent.dir}/WEB-INF/web.xml" />	
+	<property name="lib.dir" value="${webcontent.dir}/WEB-INF/lib" />
+	<property name="classes.dir" value="classes"/>
+	<!--  possible build type values LOCAL/QA/DEV/PROD -->
+	<property name="build.type" value="local"/>
+	<property name="css.dir" value="${webcontent.dir}/app/css"/>
+	<property name="resources.dir" value="../UserMgmt/resources/${build.type}/"/>
+	
+	<target name="main" depends="clean, war" >
+		<echo>****Building war file for ${build.type} environment****</echo>
+	</target>
+	
+		<target name="init">
+			<mkdir dir="${dest.dir}" />			
+		</target>
+		
+		<target name="war" depends="init">
+			<war destfile="${dest.dir}/${package.file}" webxml="${webxml.file}">
+				<fileset dir="${webcontent.dir}"/>
+			</war>
+		</target>		
+		
+		<target name="clean">
+			<delete dir="${dest.dir}" />
+		</target>
+	
+	<target name="deploy">
+		<echo> ****deploy******</echo>
+		<copy  todir="${server.path}">
+	     	<fileset dir="${dest.dir}" includes="**/*.war" />
+		</copy>
+	</target>		
+</project>
